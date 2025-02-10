@@ -1,37 +1,37 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useMatch, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import adminProductApi from 'src/apis/adminProduct.api';
-import Button from 'src/components/Button';
-import Input from 'src/components/Input';
-import { ErrorResponse, NoUndefinedField } from 'src/types/utils.type';
-import { productSchema } from 'src/utils/rules';
-import { isAxiosUnprocessableEntityError } from 'src/utils/utils';
-import { ObjectSchema } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useMatch, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import adminProductApi from 'src/apis/adminProduct.api'
+import Button from 'src/components/Button'
+import Input from 'src/components/Input'
+import { ErrorResponse, NoUndefinedField } from 'src/types/utils.type'
+import { productSchema } from 'src/utils/rules'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+import { ObjectSchema } from 'yup'
 
 type FormData = NoUndefinedField<{
-  name?: string;
-  description?: string;
-  category?: string;
-  image?: string;
-  images?: string[];
-  price?: number;
-  rating?: number;
-  price_before_discount?: number;
-  quantity?: number;
-  sold?: number;
-  view?: number;
-}>;
+  name?: string
+  description?: string
+  category?: string
+  image?: string
+  images?: string[]
+  price?: number
+  rating?: number
+  price_before_discount?: number
+  quantity?: number
+  sold?: number
+  view?: number
+}>
 
 export default function AddProduct() {
-  const addMatch = useMatch('/admin/products/addProduct');
-  const isAddMode = Boolean(addMatch);
-  const { product_id } = useParams();
-  const [file, setFile] = useState<File | null>(null);
-  const [files, setFiles] = useState<File[] | null>(null);
+  const addMatch = useMatch('/admin/products/addProduct')
+  const isAddMode = Boolean(addMatch)
+  const { product_id } = useParams()
+  const [file, setFile] = useState<File | null>(null)
+  const [files, setFiles] = useState<File[] | null>(null)
 
   const {
     register,
@@ -55,21 +55,21 @@ export default function AddProduct() {
       images: []
     },
     resolver: yupResolver<FormData>(productSchema as ObjectSchema<FormData>)
-  });
+  })
 
   // Fetch existing product data when in edit mode
   const { data: productData, isLoading } = useQuery({
     queryKey: ['product', product_id],
     queryFn: () => adminProductApi.getProduct(product_id as string),
     enabled: !!product_id
-  });
+  })
 
-  const product = productData?.data.data;
+  const product = productData?.data.data
 
   // Populate the form with product data when available
   useEffect(() => {
     if (product) {
-      console.log("Resetting form with product data:", product);
+      console.log('Resetting form with product data:', product)
       reset({
         name: product.name,
         description: product.description,
@@ -81,11 +81,10 @@ export default function AddProduct() {
         sold: product.sold,
         view: product.view,
         image: product.image,
-        images: product.images,
-      });
+        images: product.images
+      })
     }
-  }, [product, reset]);
-  
+  }, [product, reset])
 
   // Mutation for adding new product
   const addProductMutation = useMutation({
@@ -94,91 +93,89 @@ export default function AddProduct() {
       toast.success(data.data.message, {
         position: 'top-center',
         autoClose: 1000
-      });
+      })
     },
     onError: (error) => {
-      console.error("Add product mutation error:", error); // Log error during add mutation
+      console.error('Add product mutation error:', error) // Log error during add mutation
     }
-  });
+  })
 
   // Mutation for updating an existing product
   const updateProductMutation = useMutation({
     mutationFn: async ({ product_id, productData }: { product_id: string; productData: FormData }) => {
-      console.log("Updating product with ID:", product_id);  // Log product ID
-      console.log("Product data being sent:", productData);  // Log the product data being sent for update
-      return adminProductApi.updateProduct(product_id, productData);
+      console.log('Updating product with ID:', product_id) // Log product ID
+      console.log('Product data being sent:', productData) // Log the product data being sent for update
+      return adminProductApi.updateProduct(product_id, productData)
     },
     onSuccess: (data) => {
       toast.success(data.data.message, {
         position: 'top-center',
         autoClose: 1000
-      });
+      })
     },
     onError: (error) => {
-      console.error("Update product mutation error:", error); // Log error during update mutation
+      console.error('Update product mutation error:', error) // Log error during update mutation
     }
-  });
+  })
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("Form data to submit:", data);
-  
+    console.log('Form data to submit:', data)
+
     try {
-      let imageUrl = data.image;
-      let imagesArray = data.images || [];
-  
+      let imageUrl = data.image
+      let imagesArray = data.images || []
+
       // Upload main image if a new file is selected
       if (file) {
-        const formData = new FormData();
-        formData.append('image', file);
-        const uploadImageResult = await adminProductApi.uploadImage(formData);
-        imageUrl = uploadImageResult.data.data; // URL ảnh chính sau khi upload
+        const formData = new FormData()
+        formData.append('image', file)
+        const uploadImageResult = await adminProductApi.uploadImage(formData)
+        imageUrl = uploadImageResult.data.data // URL ảnh chính sau khi upload
       }
-  
+
       // Upload additional images if files are selected
       if (files) {
-        const formData = new FormData();
-        files.forEach((file) => formData.append('images', file));
-        const uploadImagesResult = await adminProductApi.uploadImage(formData);
-        imagesArray = uploadImagesResult.data.data; // Mảng URL ảnh phụ
+        const formData = new FormData()
+        files.forEach((file) => formData.append('images', file))
+        const uploadImagesResult = await adminProductApi.uploadImage(formData)
+        imagesArray = uploadImagesResult.data.data // Mảng URL ảnh phụ
       }
-  
+
       // Xử lý thêm hoặc chỉnh sửa
       if (isAddMode) {
         await addProductMutation.mutateAsync({
           ...data,
           category: '60afafe76ef5b902180aacb5', // ID danh mục mẫu
           image: imageUrl,
-          images: imagesArray,
-        });
-        reset(); 
+          images: imagesArray
+        })
+        reset()
       } else {
-        console.log("Sending update for product:", product_id);
+        console.log('Sending update for product:', product_id)
         await updateProductMutation.mutateAsync({
           product_id: product_id!,
           productData: {
             ...data,
             category: '60afafe76ef5b902180aacb5', // ID danh mục mẫu
             image: imageUrl,
-            images: imagesArray,
-          },
-        });
+            images: imagesArray
+          }
+        })
       }
-  
     } catch (error) {
-      console.log("Error updating product:", error);
+      console.log('Error updating product:', error)
       if (isAxiosUnprocessableEntityError<ErrorResponse<FormData>>(error)) {
-        const formError = error.response?.data.data;
+        const formError = error.response?.data.data
         if (formError) {
           Object.keys(formError).forEach((key) => {
             setError(key as keyof FormData, {
-              type: 'Server',
-            });
-          });
+              type: 'Server'
+            })
+          })
         }
       }
     }
-  });
-  
+  })
 
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>

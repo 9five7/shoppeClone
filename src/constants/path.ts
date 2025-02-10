@@ -1,6 +1,6 @@
 const path = {
   home: '/',
-  user:'/user',
+  user: '/user',
   admin: '/admin',
   adminProducts: '/admin/products',
   adminAddProducts: '/admin/products/addProduct',
@@ -8,14 +8,14 @@ const path = {
   adminCategory: '/admin/categories',
   adminUser: '/admin/users',
   profile: '/user/profile',
-  changePassword:'/user/Password',
-  historyPurchase:'/user/Purchase',
+  changePassword: '/user/Password',
+  historyPurchase: '/user/Purchase',
   login: '/login',
   register: '/register',
   logout: '/logout',
-  productDetail:':nameId',
-  cart:'/cart',
-  order:'/order'
+  productDetail: ':nameId',
+  cart: '/cart',
+  order: '/order'
 } as const
 
 export default path

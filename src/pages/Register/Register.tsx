@@ -20,7 +20,6 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    getValues,
     setError,
 
     formState: { errors }

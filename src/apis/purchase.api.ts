@@ -14,15 +14,15 @@ const purchaseApi = {
   },
   buyProducts(body: { product_id: string; buy_count: number }[]) {
     if (!body || body.length === 0) {
-      return Promise.reject(new Error('Không có sản phẩm nào để mua'));
+      return Promise.reject(new Error('Không có sản phẩm nào để mua'))
     }
-    return http.post<SuccessResponse<Purchase[]>>(`${URL}/buy-products`, body);
+    return http.post<SuccessResponse<Purchase[]>>(`${URL}/buy-products`, body)
   },
   updatePurchase(body: { product_id: string; buy_count: number }) {
     return http.put<SuccessResponse<Purchase>>(`${URL}/update-purchase`, body)
   },
   deletePurchase(purchaseIds: string[]) {
-    return http.delete<SuccessResponse<{deleted_count:number}>>(`${URL}`, {
+    return http.delete<SuccessResponse<{ deleted_count: number }>>(`${URL}`, {
       data: purchaseIds
     })
   },
@@ -31,6 +31,6 @@ const purchaseApi = {
   },
   handleCallback(body: { product_id: string; buy_count: number }[]) {
     return http.post<SuccessResponse<Purchase[]>>(`${URL}/payment-callback`, body)
-  },
+  }
 }
 export default purchaseApi

@@ -17,7 +17,7 @@ interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
-type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
+type FormData = Pick<Schema, 'price_max' | 'price_min'>
 
 const priceSchema = schema.pick(['price_min', 'price_max'])
 
@@ -43,8 +43,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       pathname: path.home,
       search: createSearchParams({
         ...queryConfig,
-        price_max: data.price_max,
-        price_min: data.price_min
+        price_max: data.price_max || '',
+        price_min: data.price_min || ''
       }).toString()
     })
   })

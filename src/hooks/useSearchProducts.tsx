@@ -37,5 +37,5 @@ export default function useSearchProducts() {
       search: createSearchParams(config).toString()
     })
   })
-  return {onSubmitSearch,register}
+  return { onSubmitSearch, register }
 }

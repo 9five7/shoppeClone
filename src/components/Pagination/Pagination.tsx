@@ -2,7 +2,6 @@ import { Link, createSearchParams } from 'react-router-dom'
 import path from 'src/constants/path'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 
-
 interface Props {
   queryConfig: QueryConfig
   pageSize: number
@@ -80,7 +79,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             pathname: path.home,
             search: createSearchParams({
               ...queryConfig,
-              page: (page-1 ).toString()
+              page: (page - 1).toString()
             }).toString()
           }}
           className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'
@@ -98,7 +97,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             pathname: path.home,
             search: createSearchParams({
               ...queryConfig,
-              page: (page+1 ).toString()
+              page: (page + 1).toString()
             }).toString()
           }}
           className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'

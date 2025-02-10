@@ -1,8 +1,8 @@
-import { SuccessResponse } from 'src/types/utils.type';
-import { Product, ProductList, ProductListConfig } from 'src/types/product.type';
-import http from 'src/utils/http';
-import { User, UserList, UserListt } from 'src/types/user.type';
-import { Purchase, PurchaseListStatus } from 'src/types/purchase.type';
+import { Product, ProductList, ProductListConfig } from 'src/types/product.type'
+import { Purchase, PurchaseListStatus } from 'src/types/purchase.type'
+import { User } from 'src/types/user.type'
+import { SuccessResponse } from 'src/types/utils.type'
+import http from 'src/utils/http'
 interface BodyProduct {
   name: string
   description: string
@@ -17,22 +17,22 @@ interface BodyProduct {
   view: number
 }
 
-const BASE_URL = 'admin/products';
-const URL = 'admin/users';
-const URL_ODER = 'admin/purchases';
+const BASE_URL = 'admin/products'
+const URL = 'admin/users'
+const URL_ODER = 'admin/purchases'
 
 const adminProductApi = {
   getProducts(params: ProductListConfig) {
-    return http.get<SuccessResponse<ProductList>>(`${BASE_URL}`, { params });
+    return http.get<SuccessResponse<ProductList>>(`${BASE_URL}`, { params })
   },
   getUsers() {
     return http.get<SuccessResponse<User[]>>(URL)
   },
   deleteUser(userId: string) {
-    return http.delete<SuccessResponse<string>>(`${URL}/delete/${userId}`);
+    return http.delete<SuccessResponse<string>>(`${URL}/delete/${userId}`)
   },
   getProduct(product_id: string) {
-    return http.get(`${BASE_URL}/${product_id}`);
+    return http.get(`${BASE_URL}/${product_id}`)
   },
   addProductt(productData: BodyProduct) {
     return http.post(`${BASE_URL}`, productData)
@@ -44,12 +44,12 @@ const adminProductApi = {
       }
     })
   },
-  updateProduct(product_id: string, productData:BodyProduct) {
-    return http.put<SuccessResponse<Product>>(`${BASE_URL}/${product_id}`, productData);
+  updateProduct(product_id: string, productData: BodyProduct) {
+    return http.put<SuccessResponse<Product>>(`${BASE_URL}/${product_id}`, productData)
   },
 
   deleteProduct(productId: string) {
-    return http.delete<SuccessResponse<{ deleted_count: number }>>(`${BASE_URL}/delete/${productId}`);
+    return http.delete<SuccessResponse<{ deleted_count: number }>>(`${BASE_URL}/delete/${productId}`)
   },
   getPurchases(params: { status: PurchaseListStatus }) {
     return http.get<SuccessResponse<Purchase[]>>(`${URL_ODER}`, {
@@ -58,9 +58,7 @@ const adminProductApi = {
   },
   updatePurchase(body: { product_id: string; buy_count: number }) {
     return http.put<SuccessResponse<Purchase>>(`${URL}/update-status`, body)
-  },
+  }
+}
 
-  
-};
-
-export default adminProductApi;
+export default adminProductApi

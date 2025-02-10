@@ -23,7 +23,7 @@ const productApi = {
   },
   getProductDetail(id: string) {
     return http.get<SuccessResponse<Product>>(`${URL}/${id}`)
-  },
+  }
   // addProduct(product: BodyProduct) {
   //   return http.post(`/admin/products`, product)
   // },

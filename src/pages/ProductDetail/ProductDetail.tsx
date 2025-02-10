@@ -7,11 +7,11 @@ import productApi from 'src/apis/product.api'
 import purchaseApi from 'src/apis/purchase.api'
 import ProductRating from 'src/components/ProductRating'
 import QuantityController from 'src/components/QuantityController'
+import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import { ProductListConfig, Product as ProductType } from 'src/types/product.type'
 import { FormatCurrency, FormatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/Components/Product'
-import path from 'src/constants/path'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -41,9 +41,9 @@ export default function ProductDetail() {
   })
 
   const addToCartMutation = useMutation({
-    mutationFn: (body) => purchaseApi.addToCart(body)
+    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body)
   })
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
@@ -95,12 +95,12 @@ export default function ProductDetail() {
       }
     )
   }
-  const buyNow=async()=>{
-    const res =await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
-    const purchase=res.data.data
-    navigate(path.cart ,{
-      state:{
-        purchaseId:purchase._id
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
       }
     })
   }
@@ -215,7 +215,10 @@ export default function ProductDetail() {
                   ></img>
                   Thêm vào giỏ hàng
                 </button>
-                <button className='ml-4 h-12 flex items-center border border-orange bg-orange px-14 text-white hover:bg-orange/90 justify-center' onClick={buyNow}>
+                <button
+                  className='ml-4 h-12 flex items-center border border-orange bg-orange px-14 text-white hover:bg-orange/90 justify-center'
+                  onClick={buyNow}
+                >
                   Mua Ngay
                 </button>
               </div>

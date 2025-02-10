@@ -11,8 +11,8 @@ import { ErrorResponse } from 'src/types/utils.type'
 import { Schema, schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
-type FormData = Pick<Schema, 'email'|'password'>
-const loginSchema = schema.pick(['email','password'])
+type FormData = Pick<Schema, 'email' | 'password'>
+const loginSchema = schema.pick(['email', 'password'])
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
@@ -31,13 +31,12 @@ export default function Login() {
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess: (data) => {
-        const user=data.data.data.user 
+        const user = data.data.data.user
         setIsAuthenticated(true)
         setProfile(user)
-        if(user.roles.includes('Admin')){
+        if (user.roles.includes('Admin')) {
           navigate('/admin/products')
-        }
-        else{
+        } else {
           navigate('/')
         }
       },

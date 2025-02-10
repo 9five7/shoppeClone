@@ -1,4 +1,3 @@
-
 import { Outlet } from 'react-router-dom'
 import AdminSideNav from '../../components/AdminSideNav'
 
@@ -13,7 +12,6 @@ export default function Adminlayout() {
           <div className='col-span-5'>
             <Outlet />
           </div>
-          
         </div>
       </div>
     </div>

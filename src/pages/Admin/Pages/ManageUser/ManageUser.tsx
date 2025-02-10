@@ -1,8 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
 import adminProductApi from 'src/apis/adminProduct.api'
-
-import path from 'src/constants/path'
 
 export default function ManageUser() {
   const queryClient = useQueryClient()
@@ -45,7 +42,6 @@ export default function ManageUser() {
                 <th scope='col' className='py-3 px-10'>
                   Email
                 </th>
-                
               </tr>
             </thead>
             <tbody>
@@ -58,7 +54,6 @@ export default function ManageUser() {
                   <td className='py-4 px-6'>{user.name}</td>
                   <td className='py-4 px-8'>{user.email}</td>
                   <td className='py-4 px-4 text-right'>
-                    
                     <button
                       className='font-medium text-red-600 dark:text-red-500'
                       onClick={() => handleDeleteUser(user._id)}
@@ -72,8 +67,6 @@ export default function ManageUser() {
           </table>
         </div>
       )}
-
-      
     </div>
   )
 }

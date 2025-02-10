@@ -1,21 +1,21 @@
-import { useState, useRef, useId, type ElementType } from 'react'
 import {
-  useFloating,
   FloatingPortal,
   arrow,
-  shift,
-  offset,
-  type Placement,
-  flip,
   autoUpdate,
-  useHover,
-  useFocus,
+  flip,
+  offset,
+  safePolygon,
+  shift,
   useDismiss,
-  useRole,
+  useFloating,
+  useFocus,
+  useHover,
   useInteractions,
-  safePolygon
+  useRole,
+  type Placement
 } from '@floating-ui/react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useId, useRef, useState, type ElementType } from 'react'
 
 interface Props {
   children: any

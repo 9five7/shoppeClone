@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import InputNumber, { InputNumberProps } from '../InputNumber'
-import { number } from 'yup'
 
 interface Props extends InputNumberProps {
   max?: number
@@ -21,7 +20,7 @@ export default function QuantityController({
   value,
   ...rest
 }: Props) {
-  const [localValue,setLocaleValue]=useState<number>(Number(value ||0))
+  const [localValue, setLocaleValue] = useState<number>(Number(value || 0))
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
     if (max !== undefined && _value > max) {
@@ -33,7 +32,7 @@ export default function QuantityController({
     setLocaleValue(_value)
   }
   const increase = () => {
-    let _value = Number(value ||localValue) + 1
+    let _value = Number(value || localValue) + 1
     if (max !== undefined && _value > max) {
       _value = max
     }
@@ -41,7 +40,7 @@ export default function QuantityController({
     setLocaleValue(_value)
   }
   const decrease = () => {
-    let _value = Number(value ||localValue) - 1
+    let _value = Number(value || localValue) - 1
     if (_value < 1) {
       _value = 1
     }
@@ -49,7 +48,7 @@ export default function QuantityController({
     setLocaleValue(_value)
   }
 
-  const handleBlur=(event:React.FocusEvent<HTMLInputElement, Element>)=>{
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
     onFocusOut && onFocusOut(Number(event.target.value))
   }
   return (
