@@ -31,7 +31,7 @@ export default function AddProduct() {
   const isAddMode = Boolean(addMatch)
   const { product_id } = useParams()
   const [file, setFile] = useState<File | null>(null)
-  const [files, setFiles] = useState<File[] | null>(null)
+  const [files] = useState<File[] | null>(null)
 
   const {
     register,
@@ -58,7 +58,7 @@ export default function AddProduct() {
   })
 
   // Fetch existing product data when in edit mode
-  const { data: productData, isLoading } = useQuery({
+  const { data: productData } = useQuery({
     queryKey: ['product', product_id],
     queryFn: () => adminProductApi.getProduct(product_id as string),
     enabled: !!product_id

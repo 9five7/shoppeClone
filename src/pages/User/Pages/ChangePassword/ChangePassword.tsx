@@ -10,12 +10,12 @@ import { userSchema, UserSchema } from 'src/utils/rules'
 type FormData = Pick<UserSchema, 'password' | 'new_password' | 'confirm_password'>
 const passwordSchema = userSchema.pick(['password', 'new_password', 'confirm_password'])
 export default function ChangePassword() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [, setIsSubmitting] = useState(false)
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setError
+    
   } = useForm<FormData>({
     defaultValues: {
       password: '',

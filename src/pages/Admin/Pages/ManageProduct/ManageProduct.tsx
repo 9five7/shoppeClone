@@ -90,7 +90,7 @@ export default function ManageProduct() {
             </li>
             <li>
               <a
-                className='border border-gray-300 bg-white bg-white py-2 px-3 leading-tight text-gray-500 text-gray-500  hover:bg-gray-100 hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700'
+                className='border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500   hover:bg-gray-100  hover:text-gray-700'
                 href='/students?page=8'
               >
                 1

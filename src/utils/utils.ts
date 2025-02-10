@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios'
-import exp from 'constants'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
@@ -22,14 +21,15 @@ export function FormatNumberToSocialStyle(value: number) {
     .replace('.', ',')
     .toLowerCase()
 }
-export const rateSale=(original:number,sale:number)=>Math.round(((original-sale) /original)*100)+'%'
+export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
 
-export const removeSpecialCharacter=(str:string)=>str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<\>|\?|\/|\,|\.|\:|\;|\'|\"|\&|\$|\[|\]|\`|\~|_|\#|\-|{|}|\||\\/g,'')
+export const removeSpecialCharacter = (str: string) =>
+  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<\>|\?|\/|\,|\.|\:|\;|\'|\"|\&|\$|\[|\]|\`|\~|_|\#|\-|{|}|\||\\/g, '')
 
-export const generateNameId=({name,id}:{name:string;id:string})=>{
-  return  removeSpecialCharacter(name).replace(/\s/g, '-')+`-i.${id}`
+export const generateNameId = ({ name, id }: { name: string; id: string }) => {
+  return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i.${id}`
 }
-export const getIdFromNameId=(nameId:string)=>{
-  const arr=nameId.split('-i.')
-  return arr[arr.length-1]
+export const getIdFromNameId = (nameId: string) => {
+  const arr = nameId.split('-i.')
+  return arr[arr.length - 1]
 }

@@ -9,7 +9,7 @@ import { AppContext } from 'src/context/app.context'
 import { FormatCurrency } from 'src/utils/utils'
 
 export default function Order() {
-  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
+  const { extendedPurchases } = useContext(AppContext)
   const location = useLocation()
   const { purchaseIds } = location.state || {}
   const checkedPurchases = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases])

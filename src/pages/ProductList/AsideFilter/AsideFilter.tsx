@@ -6,7 +6,6 @@ import Button from 'src/components/Button'
 import InputNumber from 'src/components/InputNumber'
 import path from 'src/constants/path'
 import { Category } from 'src/types/category.type'
-import { NoUndefinedField } from 'src/types/utils.type'
 import { Schema, schema } from 'src/utils/rules'
 
 import InputV2 from 'src/components/InputV2'
@@ -157,7 +156,6 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
               placeholder='₫ TỪ'
               classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
               classNameError='hidden'
-      
               onChange={() => {
                 trigger('price_max')
               }}

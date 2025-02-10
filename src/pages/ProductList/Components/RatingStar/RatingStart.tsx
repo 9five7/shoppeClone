@@ -1,6 +1,6 @@
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path'
-import { QueryConfig } from '../../ProductList'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 
 interface Props {
@@ -25,7 +25,13 @@ export default function RatingStart({ queryConfig }: Props) {
         .fill(0)
         .map((_, index) => (
           <li className='py-1 pl-2' key={index}>
-            <div className='flex items-center text-sm' onClick={() => handleFilterStart(5 - index)} tabIndex={0} role='button' aria-hidden='true'>
+            <div
+              className='flex items-center text-sm'
+              onClick={() => handleFilterStart(5 - index)}
+              tabIndex={0}
+              role='button'
+              aria-hidden='true'
+            >
               {Array(5)
                 .fill(0)
                 .map((_, indexStart) => {

@@ -30,7 +30,7 @@ export default function Cart() {
 
   const buyProductMutation = useMutation({
     mutationFn: purchaseApi.buyProducts,
-    onSuccess: (data) => {}
+    onSuccess: () => {}
   })
   const deletePurchaseMutation = useMutation({
     mutationFn: purchaseApi.deletePurchase,
@@ -43,7 +43,6 @@ export default function Cart() {
   const purchasesInCart = purchasesInCartData?.data.data
   const isAllChecked = useMemo(() => extendedPurchases.every((purchase) => purchase.checked), [extendedPurchases])
   const checkedPurchases = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases])
-  const checkedPurchasesCount = checkedPurchases.length
   const totalCheckedPurchasePrice = useMemo(
     () =>
       checkedPurchases.reduce((result, current) => {
@@ -117,15 +116,15 @@ export default function Cart() {
     const purchasesIds = checkedPurchases.map((purchase) => purchase._id)
     deletePurchaseMutation.mutate(purchasesIds)
   }
-  const handleBuyPurchase = () => {
-    if (checkedPurchases.length > 0) {
-      const body = checkedPurchases.map((purchase) => ({
-        product_id: purchase.product._id,
-        buy_count: purchase.buy_count
-      }))
-      buyProductMutation.mutate(body)
-    }
-  }
+  // const handleBuyPurchase = () => {
+  //   if (checkedPurchases.length > 0) {
+  //     const body = checkedPurchases.map((purchase) => ({
+  //       product_id: purchase.product._id,
+  //       buy_count: purchase.buy_count
+  //     }))
+  //     buyProductMutation.mutate(body)
+  //   }
+  // }
   const buyNow = async () => {
     if (checkedPurchases.length > 0) {
       // Kiểm tra lại các sản phẩm đã chọn
