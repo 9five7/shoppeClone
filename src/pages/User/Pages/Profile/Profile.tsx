@@ -1,22 +1,25 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
+import config from 'src/constants/config'
+import { AppContext } from 'src/context/app.context'
 import { setProfileToLS } from 'src/utils/auth'
 import { userSchema, UserSchema } from 'src/utils/rules'
-import DateSelect from '../../components/DateSelect'
 import { getAvatarUrl } from 'src/utils/utils'
+import DateSelect from '../../components/DateSelect'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
+  const { setProfile } = useContext(AppContext)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
@@ -65,9 +68,9 @@ export default function Profile() {
     setIsSubmitting(true)
     try {
       let avatarName = avatar
-      if(file){
-        const form =new FormData()
-        form.append('image',file)
+      if (file) {
+        const form = new FormData()
+        form.append('image', file)
         const uploadRes = await uploadAvatarMutaion.mutateAsync(form)
         avatarName = uploadRes.data.data
         console.log(uploadRes.data.data)
@@ -78,6 +81,7 @@ export default function Profile() {
         date_of_birth: data.date_of_birth?.toISOString(),
         avatar: avatarName
       })
+      setProfile(res.data.data)
       setProfileToLS(res.data.data)
       refetch()
       toast.success(res.data.message)
@@ -90,7 +94,11 @@ export default function Profile() {
   })
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFormLocal = event.target.files?.[0]
-    setFile(fileFormLocal)
+    if (fileFormLocal && (fileFormLocal.size >= config.maxSizeUploadAvatar || !fileFormLocal.type.includes('image'))) {
+      toast.error('Dụng lượng file tối đa 1 MB Định dạng:.JPEG, .PNG')
+    } else {
+      setFile(fileFormLocal)
+    }
   }
   const handleUpload = () => {
     fileInputRef.current?.click()
@@ -173,9 +181,22 @@ export default function Profile() {
         <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
           <div className='flex flex-col items-center'>
             <div className='my-5 h-24 w-24'>
-              <img src={previewImage || getAvatarUrl(avatar)} alt='' className='h-full w-full rounded-full object-cover' />
+              <img
+                src={previewImage || getAvatarUrl(avatar)}
+                alt=''
+                className='h-full w-full rounded-full object-cover'
+              />
             </div>
-            <input type='file' accept='.jpg,.jpeg,.png' className='hidden' ref={fileInputRef} onChange={onFileChange} />
+            <input
+              type='file'
+              accept='.jpg,.jpeg,.png'
+              className='hidden'
+              ref={fileInputRef}
+              onChange={onFileChange}
+              onClick={(event) => {
+                ;(event.target as any).value = null
+              }}
+            />
             <button
               className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-gray-600 shadow-sm'
               type='button'
