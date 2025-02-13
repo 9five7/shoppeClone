@@ -1,13 +1,20 @@
 import { useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 
+import { Role } from 'src/types/user.type'
 import path from './constants/path'
 import { AppContext } from './context/app.context'
 import CartLayout from './layouts/CartLayout'
 import MainLayout from './layouts/MainLayout'
 import RegisterLayout from './layouts/RegisterLayout'
+import Adminlayout from './pages/Admin/layouts/AdminLayout'
+import AddProduct from './pages/Admin/Pages/AddProduct'
+import ManageProduct from './pages/Admin/Pages/ManageProduct'
+import ManageUser from './pages/Admin/Pages/ManageUser'
 import Cart from './pages/Cart'
 import Login from './pages/Login'
+import NotFound from './pages/NotFound'
+import Oder from './pages/Oder'
 import ProductDetail from './pages/ProductDetail'
 import ProductList from './pages/ProductList'
 import Register from './pages/Register'
@@ -15,28 +22,22 @@ import UserLayout from './pages/User/layouts/UserLayout'
 import ChangePassword from './pages/User/Pages/ChangePassword'
 import HistoryPurchsae from './pages/User/Pages/HistoryPurchase'
 import Profile from './pages/User/Pages/Profile'
-import { Role } from 'src/types/user.type';
-import ManageProduct from './pages/Admin/Pages/ManageProduct'
-import Adminlayout from './pages/Admin/layouts/AdminLayout'
-import ManageUser from './pages/Admin/Pages/ManageUser'
-import AddProduct from './pages/Admin/Pages/AddProduct'
-import Oder from './pages/Oder'
 // function ProtectedRoute() {
 //   const { inAuthenticated } = useContext(AppContext)
 //   return inAuthenticated ? <Outlet /> : <Navigate to='/login' />
 // }
 function ProtectedRoute({ requiredRole }: { requiredRole?: Role }) {
-  const { inAuthenticated, profile } = useContext(AppContext);
+  const { inAuthenticated, profile } = useContext(AppContext)
 
   if (!inAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to='/login' />
   }
 
   if (requiredRole && !profile?.roles.includes(requiredRole)) {
-    return <Navigate to="/" />;
+    return <Navigate to='/' />
   }
 
-  return <Outlet />;
+  return <Outlet />
 }
 
 function ReJectedRoute() {
@@ -118,11 +119,11 @@ export default function useRouteElements() {
               element: <ManageUser />
             },
             {
-              path:path.adminAddProducts,
+              path: path.adminAddProducts,
               element: <AddProduct />
             },
             {
-              path:path.adminEditProducts,
+              path: path.adminEditProducts,
               element: <AddProduct />
             }
           ]
@@ -164,6 +165,14 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <ProductDetail />
+        </MainLayout>
+      )
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <NotFound />
         </MainLayout>
       )
     }
