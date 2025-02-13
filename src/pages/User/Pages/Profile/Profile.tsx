@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -10,8 +10,10 @@ import InputNumber from 'src/components/InputNumber'
 import { setProfileToLS } from 'src/utils/auth'
 import { userSchema, UserSchema } from 'src/utils/rules'
 import DateSelect from '../../components/DateSelect'
+import { getAvatarUrl } from 'src/utils/utils'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
+
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
@@ -21,6 +23,12 @@ export default function Profile() {
     queryFn: userApi.getProfile
   })
   const profile = profileData?.data.data
+  const updateProfileMutation = useMutation({
+    mutationFn: userApi.updateProfile
+  })
+  const uploadAvatarMutaion = useMutation({
+    mutationFn: userApi.uploadAvatar
+  })
   const [, setIsSubmitting] = useState(false)
   const [file, setFile] = useState<File>()
   const previewImage = useMemo(() => {
@@ -56,7 +64,20 @@ export default function Profile() {
   const onSubmit = handleSubmit(async (data) => {
     setIsSubmitting(true)
     try {
-      const res = await userApi.updateProfile({ ...data, date_of_birth: data.date_of_birth?.toISOString() })
+      let avatarName = avatar
+      if(file){
+        const form =new FormData()
+        form.append('image',file)
+        const uploadRes = await uploadAvatarMutaion.mutateAsync(form)
+        avatarName = uploadRes.data.data
+        console.log(uploadRes.data.data)
+        setValue('avatar', avatarName)
+      }
+      const res = await updateProfileMutation.mutateAsync({
+        ...data,
+        date_of_birth: data.date_of_birth?.toISOString(),
+        avatar: avatarName
+      })
       setProfileToLS(res.data.data)
       refetch()
       toast.success(res.data.message)
@@ -152,7 +173,7 @@ export default function Profile() {
         <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
           <div className='flex flex-col items-center'>
             <div className='my-5 h-24 w-24'>
-              <img src={previewImage || avatar} alt='' className='h-full w-full rounded-full object-cover' />
+              <img src={previewImage || getAvatarUrl(avatar)} alt='' className='h-full w-full rounded-full object-cover' />
             </div>
             <input type='file' accept='.jpg,.jpeg,.png' className='hidden' ref={fileInputRef} onChange={onFileChange} />
             <button

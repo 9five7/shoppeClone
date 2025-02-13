@@ -5,7 +5,7 @@ import authApi from 'src/apis/auth.api'
 import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import { AppContext } from 'src/context/app.context'
-
+import { getAvatarUrl } from 'src/utils/utils'
 import Popover from '../Popover'
 
 export default function NavHeader() {
@@ -91,13 +91,9 @@ export default function NavHeader() {
           }
         >
           <div className='w-6 h-6 mr-2 flex-shrink-0'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/f24f81f450e742cba3a7d44b7ad7140e_tn'
-              alt='avatar'
-              className='w-full h-full object-cover rounded-full'
-            />
+            <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='w-full h-full object-cover rounded-full' />
           </div>
-          <div>{profile?.email}</div>
+          <div>{profile?.name || profile?.email}</div>
         </Popover>
       )}
       {!inAuthenticated && (
